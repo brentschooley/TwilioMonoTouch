@@ -1,0 +1,6 @@
+obj/Debug/ios/ObjCRuntime/Messaging.g.cs
+obj/Debug/ios/TwilioClientCS/TCConnectionDelegate.g.cs
+obj/Debug/ios/TwilioClientCS/TCConnection.g.cs
+obj/Debug/ios/TwilioClientCS/TCDeviceDelegate.g.cs
+obj/Debug/ios/TwilioClientCS/TCDevice.g.cs
+obj/Debug/ios/TwilioClientCS/TCPresenceEvent.g.cs
