@@ -10,8 +10,10 @@ namespace TwilioTest
 {
 	public partial class TwilioTestViewController : UIViewController
 	{
-		NSObject connection;
+		TCConnection connection;
 		TCDevice device;
+		DeviceDelegate deviceDelegate;
+		ConnectionDelegate connectionDelegate;
 
 		public TwilioTestViewController () : base ("TwilioTestViewController", null)
 		{
@@ -28,9 +30,12 @@ namespace TwilioTest
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+		}
 
-			DeviceDelegate deviceDelegate = new DeviceDelegate ();
-			ConnectionDelegate connectionDelegate = new ConnectionDelegate ();
+		partial void btnCall (NSObject sender)
+		{
+			deviceDelegate = new DeviceDelegate ();
+			connectionDelegate = new ConnectionDelegate ();
 
 			WebClient client = new WebClient ();
 			string token = client.DownloadString ("http://devin.webscript.io/generateToken?clientName=mono&TwimlApp=AP71b92bb5615e4a11b10dffcac9582397");
@@ -43,6 +48,12 @@ namespace TwilioTest
 			);
 
 			connection = device.Connect(param, connectionDelegate);
+		}
+
+		partial void btnHangup (NSObject sender)
+		{
+			TCConnection conn = (TCConnection)connection;
+			conn.Disconnect();
 		}
 
 		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)

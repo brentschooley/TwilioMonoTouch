@@ -106,8 +106,10 @@ namespace TwilioClientCS {
 
 		// This fails if I try to return a real TCConnection object, I think because
 		// we are actually getting a TCConnectionInternal back.  Need to verify that.
-		[Export ("connect:delegate:")]
-		NSObject Connect ([NullAllowed]NSDictionary parameters, [NullAllowed]TCConnectionDelegate d);
+		[Export ("connect:delegate:")][Internal]
+		IntPtr Connect_ (NSDictionary parameters, TCConnectionDelegate d);
+
+		//TCConnection Connect ([NullAllowed]NSDictionary parameters, [NullAllowed]TCConnectionDelegate d);
 
 		[Export ("disconnectAll")]
 		void DisconnectAll ();

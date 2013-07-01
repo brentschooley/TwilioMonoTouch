@@ -61,5 +61,6 @@
     <Compile Include="libssl.linkwith.cs">
       <DependentUpon>libssl.a</DependentUpon>
     </Compile>
+    <Compile Include="Extras.cs" />
   </ItemGroup>
 </Project>

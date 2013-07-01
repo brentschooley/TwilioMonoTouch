@@ -1,29 +1,28 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.6.1" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="TwilioTest/TwilioTestViewController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TwilioClientCS/obj/Debug/ios/TwilioClientCS/TCDevice.g.cs">
     <Files>
-      <File FileName="TwilioTest/TwilioTestViewController.cs" Line="45" Column="1" />
+      <File FileName="TwilioClientCS/StructsAndEnums.cs" Line="14" Column="9" />
+      <File FileName="TwilioTest/TwilioTestViewController.designer.cs" Line="1" Column="1" />
+      <File FileName="TwilioTest/TwilioTestViewController.cs" Line="58" Column="3" />
+      <File FileName="TwilioClientCS/ApiDefinition.cs" Line="110" Column="15" />
+      <File FileName="TwilioClientCS/obj/Debug/ios/TwilioClientCS/TCDevice.g.cs" Line="201" Column="26" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="TwilioClientCS" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="libTwilioClient.a" expanded="True" />
+            <Node name="ApiDefinition.cs" selected="True" />
           </Node>
           <Node name="TwilioTest" expanded="True">
-            <Node name="TwilioTestViewController.cs" selected="True" />
+            <Node name="TwilioTestViewController.cs" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/devinrader/Projects/TwilioClientCS/TwilioTest/EmptyClass.cs" line="10" column="43" />
-      <Breakpoint file="/Users/devinrader/Projects/TwilioClientCS/TwilioTest/EmptyClass.cs" line="17" column="1" />
-      <Breakpoint file="/Users/devinrader/Projects/TwilioClientCS/TwilioTest/TwilioTestViewController.cs" line="45" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
