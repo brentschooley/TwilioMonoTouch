@@ -29,22 +29,20 @@ namespace TwilioTest
 		{
 			base.ViewDidLoad ();
 
-
-			//TCDevice device = new Twilio.TCDevice ("asdasdasdasd", null);
-			EmptyClass1 one = new EmptyClass1 ();
-			EmptyClass2 two = new EmptyClass2 ();
+			DeviceDelegate deviceDelegate = new DeviceDelegate ();
+			ConnectionDelegate connectionDelegate = new ConnectionDelegate ();
 
 			WebClient client = new WebClient ();
 			string token = client.DownloadString ("http://devin.webscript.io/generateToken?clientName=mono&TwimlApp=AP71b92bb5615e4a11b10dffcac9582397");
 
-			device = new TCDevice(token,one);
+			device = new TCDevice(token,deviceDelegate);
 
 			NSDictionary param = NSDictionary.FromObjectsAndKeys (
 				new object[] { "+14159929754", "+13144586142" },
 				new object[] { "Source", "Target" }
 			);
 
-			connection = device.Connect(param, two);
+			connection = device.Connect(param, connectionDelegate);
 		}
 
 		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)

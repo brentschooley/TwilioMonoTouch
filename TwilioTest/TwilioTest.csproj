@@ -87,14 +87,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
-    <None Include="libcrypto.a" />
-    <None Include="libssl.a" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -103,7 +102,8 @@
     <Compile Include="TwilioTestViewController.designer.cs">
       <DependentUpon>TwilioTestViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="EmptyClass.cs" />
+    <Compile Include="ConnectionDelegate.cs" />
+    <Compile Include="DeviceDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="TwilioTestViewController.xib" />

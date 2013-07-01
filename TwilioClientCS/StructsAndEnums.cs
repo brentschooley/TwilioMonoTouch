@@ -14,11 +14,5 @@ namespace TwilioClientCS
 		Ready,
 		Busy
 	}
-
-	public enum Foo
-	{
-		FLa,
-		Ble
-	}
 }
 

@@ -1,4 +1,0 @@
-/Users/devinrader/Projects/TwilioClientCS/TwilioClientCS/bin/Debug/TwilioClientCS.dll.mdb
-/Users/devinrader/Projects/TwilioClientCS/TwilioClientCS/bin/Debug/TwilioClientCS.dll
-/Users/devinrader/Projects/TwilioClientCS/TwilioClientCS/obj/Debug/TwilioClientCS.dll
-/Users/devinrader/Projects/TwilioClientCS/TwilioClientCS/obj/Debug/TwilioClientCS.dll.mdb
