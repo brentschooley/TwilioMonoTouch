@@ -8,20 +8,22 @@ namespace TwilioClientCS {
 	[Model, BaseType (typeof (NSObject))]
 	public partial interface TCConnectionDelegate {
 
-		[Export ("connection:didFailWithError:"), Abstract]
+		[Export ("connection:didFailWithError:"), Abstract, EventArgs ("DidFailWithError"), EventName("FailedWithError")]
 		void DidFailWithError (TCConnection connection, NSError error);
 
-		[Export ("connectionDidStartConnecting:")]
+		[Export ("connectionDidStartConnecting:"),EventArgs ("DidStartConnecting"), EventName("StartedConnecting")]
 		void DidStartConnecting (TCConnection connection);
 
-		[Export ("connectionDidConnect:")]
+		[Export ("connectionDidConnect:"),EventArgs ("DidConnect"), EventName("Connected")]
 		void DidConnect (TCConnection connection);
 
-		[Export ("connectionDidDisconnect:")]
+		[Export ("connectionDidDisconnect:"),EventArgs ("DidDisconnect"), EventName("Disconnected")]
 		void DidDisconnect (TCConnection connection);
 	}
 	
-	[BaseType (typeof (NSObject))]
+	[BaseType (typeof (NSObject),
+	 Delegates=new string [] { "WeakDelegate" },
+	 Events=new Type [] { typeof(TCConnectionDelegate)})]
 	public partial interface TCConnection {
 
 		[Export ("state")]
@@ -34,7 +36,10 @@ namespace TwilioClientCS {
 		NSDictionary Parameters { get; }
 
 		[Export ("delegate", ArgumentSemantic.Assign)][NullAllowed]
-		TCConnectionDelegate WeakDelegate { get;set; }
+		NSObject WeakDelegate { get;set; }
+
+		[Wrap ("WeakDelegate")][NullAllowed]
+		TCConnectionDelegate Delegate { get; set; }
 
 		[Export ("muted")]
 		bool Muted { [Bind ("isMuted")] get; set; }
@@ -58,20 +63,22 @@ namespace TwilioClientCS {
 	[Model, BaseType (typeof (NSObject))]
 	public partial interface TCDeviceDelegate {
 
-		[Export ("device:didStopListeningForIncomingConnections:"), Abstract]
+		[Export ("device:didStopListeningForIncomingConnections:"), Abstract, EventArgs("DidStopListeningForIncomingConnections"), EventName("StoppedListeningForIncomingConnections")]
 		void DidStopListeningForIncomingConnections (TCDevice device, NSError error);
 
-		[Export ("deviceDidStartListeningForIncomingConnections:")]
+		[Export ("deviceDidStartListeningForIncomingConnections:"),EventArgs ("DidStartListeningForIncomingConnections"), EventName("StartedListeningForIncomingConnections")]
 		void DidStartListeningForIncomingConnections (TCDevice device);
 
-		[Export ("device:didReceiveIncomingConnection:")]
+		[Export ("device:didReceiveIncomingConnection:"),EventArgs ("DidReceiveIncomingConnection"), EventName("ReceivedIncomingConnection")]
 		void DidReceiveIncomingConnection (TCDevice device, TCConnection connection);
 
-		[Export ("device:didReceivePresenceUpdate:")]
+		[Export ("device:didReceivePresenceUpdate:"),EventArgs ("DidReceivePresenceUpdate"), EventName("ReceivedPresenceUpdate")]
 		void DidReceivePresenceUpdate (TCDevice device, TCPresenceEvent presenceEvent);
 	}
 	
-	[BaseType (typeof (NSObject))]
+	[BaseType (typeof (NSObject),
+	 Delegates=new string [] { "WeakDelegate" },
+	 Events=new Type [] { typeof(TCDeviceDelegate)})]
 	public partial interface TCDevice {
 
 		[Export ("state")]
@@ -81,7 +88,10 @@ namespace TwilioClientCS {
 		NSDictionary Capabilities { get; }
 
 		[Export ("delegate", ArgumentSemantic.Assign)][NullAllowed]
-		TCDeviceDelegate Delegate { get; set; }
+		NSObject Delegate { get; set; }
+
+		[Wrap ("WeakDelegate")][NullAllowed]
+		TCDeviceDelegate WeakDelegate {get;set;}
 
 		[Export ("incomingSoundEnabled")]
 		bool IncomingSoundEnabled { get; set; }
@@ -104,12 +114,8 @@ namespace TwilioClientCS {
 		[Export ("updateCapabilityToken:")]
 		void UpdateCapabilityToken (string capabilityToken);
 
-		// This fails if I try to return a real TCConnection object, I think because
-		// we are actually getting a TCConnectionInternal back.  Need to verify that.
 		[Export ("connect:delegate:")][Internal]
 		IntPtr Connect_ (NSDictionary parameters, TCConnectionDelegate d);
-
-		//TCConnection Connect ([NullAllowed]NSDictionary parameters, [NullAllowed]TCConnectionDelegate d);
 
 		[Export ("disconnectAll")]
 		void DisconnectAll ();

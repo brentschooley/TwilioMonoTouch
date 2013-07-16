@@ -7,7 +7,7 @@ namespace TwilioTest
 	public class DeviceDelegate : TCDeviceDelegate
 	{
 		public override void DidStopListeningForIncomingConnections(TCDevice device, NSError error) {
-			Console.WriteLine("DidStopListeningForIncomingConnection");
+			//Console.WriteLine("DidStopListeningForIncomingConnection");
 		}
 
 //		public override void DidReceiveIncomingConnection (TCDevice device, TCConnection connection)

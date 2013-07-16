@@ -12,6 +12,7 @@ namespace TwilioTest
 	{
 		TCConnection connection;
 		TCDevice device;
+
 		DeviceDelegate deviceDelegate;
 		ConnectionDelegate connectionDelegate;
 
@@ -30,17 +31,88 @@ namespace TwilioTest
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-		}
-
-		partial void btnCall (NSObject sender)
-		{
-			deviceDelegate = new DeviceDelegate ();
-			connectionDelegate = new ConnectionDelegate ();
 
 			WebClient client = new WebClient ();
 			string token = client.DownloadString ("http://devin.webscript.io/generateToken?clientName=mono&TwimlApp=AP71b92bb5615e4a11b10dffcac9582397");
 
 			device = new TCDevice(token,deviceDelegate);
+		}
+
+		#region TCDevice
+
+		partial void swDisconnectSoundEnabled (NSObject sender)
+		{
+			if (device!=null) {
+				device.DisconnectSoundEnabled = ((UISwitch)sender).On;
+			}
+
+			Console.WriteLine("disconnectSoundEnabled: " + device.DisconnectSoundEnabled);
+		}
+
+		partial void swIncomingSoundEnabled (NSObject sender)
+		{
+			if (device!=null) {
+				device.IncomingSoundEnabled = ((UISwitch)sender).On;
+			}
+
+			Console.WriteLine("incomingSoundEnabled: " + device.IncomingSoundEnabled);
+		}
+
+		partial void swOutgoingSoundEnabled (NSObject sender)
+		{
+			if (device!=null) {
+				device.OutgoingSoundEnabled = ((UISwitch)sender).On;
+			}
+
+			Console.WriteLine("outgoingSoundEnabled: " + device.OutgoingSoundEnabled);
+		}
+
+		partial void swListen (NSObject sender)
+		{
+			if (device!=null) 
+			{
+				if (((UISwitch)sender).On) 
+				{
+					device.Listen();
+				}
+				else 
+				{
+					device.Unlisten();
+				}
+			}
+
+			Console.WriteLine("listen: " + ((UISwitch)sender).On);
+		}
+
+		partial void btnCall (NSObject sender)
+		{
+			device.StoppedListeningForIncomingConnections += delegate 
+			{
+				Console.WriteLine("StoppedListeningForIncomingConnection"); 
+			};
+			device.StartedListeningForIncomingConnections += delegate 
+			{
+				Console.WriteLine("StartedListeningForIncomingConnections"); 
+			};
+			device.ReceivedIncomingConnection += delegate { Console.WriteLine("ReceivedIncomingConnection"); };
+			device.ReceivedPresenceUpdate += delegate { Console.WriteLine("ReceivedPresenceUpdate"); };
+
+			connection.FailedWithError += delegate 
+			{
+				Console.WriteLine("FailedWithError"); 
+			};
+			connection.StartedConnecting += delegate 
+			{
+				Console.WriteLine("StartedConnecting"); 
+			};
+			connection.Connected += delegate 
+			{
+				Console.WriteLine("Connected"); 
+			};
+			connection.Disconnected += delegate 
+			{
+				Console.WriteLine("Disconnected"); 
+			};
 
 			NSDictionary param = NSDictionary.FromObjectsAndKeys (
 				new object[] { "+14159929754", "+13144586142" },
@@ -50,10 +122,80 @@ namespace TwilioTest
 			connection = device.Connect(param, connectionDelegate);
 		}
 
+		#endregion
+
+		#region TCConnection
+
+		partial void swMuted (NSObject sender)
+		{
+			if (connection !=null && connection.State == TCConnectionState.Connected)
+			{
+				connection.Muted = ((UISwitch)sender).On;
+
+				Console.WriteLine("muted: " + connection.Muted);
+			}
+		}
+
 		partial void btnHangup (NSObject sender)
 		{
-			TCConnection conn = (TCConnection)connection;
-			conn.Disconnect();
+			if (connection !=null && connection.State == TCConnectionState.Connected)
+			{
+				connection.Disconnect();
+			}
+		}
+
+		partial void btnAccept (NSObject sender)
+		{
+			if (connection!=null)
+			{
+				connection.Accept();
+			}
+		}
+
+		partial void btnIgnore (NSObject sender)
+		{
+			if (connection!=null)
+			{
+				connection.Ignore();
+			}
+		}
+
+		partial void btnReject (NSObject sender)
+		{
+			if (connection!=null)
+			{
+				connection.Reject();
+			}
+		}
+
+		partial void btnOne (NSObject sender)
+		{
+			if (connection !=null && connection.State == TCConnectionState.Connected)
+			{
+				connection.SendDigits("1");
+
+				Console.WriteLine("send digits: 1");
+			}
+		}
+
+		partial void btnTwo (NSObject sender)
+		{
+			if (connection !=null && connection.State == TCConnectionState.Connected)
+			{
+				connection.SendDigits("2");
+
+				Console.WriteLine("send digits: 2");
+			}
+		}
+
+		partial void btnThree (NSObject sender)
+		{
+			if (connection !=null && connection.State == TCConnectionState.Connected)
+			{
+				connection.SendDigits("3");
+
+				Console.WriteLine("send digits: 2");
+			}
 		}
 
 		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
@@ -61,6 +203,20 @@ namespace TwilioTest
 			// Return true for supported orientations
 			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
 		}
+
+		#endregion
+
+//		private void updateStateLabels {
+//			string stateString;
+//
+//			stateString = [self convertDeviceToString:[[self device] state] ];
+//			Console.WriteLine("updateStateLabels: " + stateString);
+//			[[self lblDeviceState] setText:stateString];
+//
+//			stateString = [self convertConnectionToString:[[self connection] state] ];
+//			Console.WriteLine("updateStateLabels: " + stateString);
+//			[[self lblConnectionState] setText:stateString];
+//		}
 	}
 }
 
