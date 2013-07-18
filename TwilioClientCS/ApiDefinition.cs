@@ -1,30 +1,30 @@
 using System;
-
+using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.ObjCRuntime;
+using MonoTouch.UIKit;
 
-namespace TwilioClientCS {
-
-	[Model, BaseType (typeof (NSObject))]
-	public partial interface TCConnectionDelegate {
-
-		[Export ("connection:didFailWithError:"), Abstract, EventArgs ("DidFailWithError"), EventName("FailedWithError")]
-		void DidFailWithError (TCConnection connection, NSError error);
-
-		[Export ("connectionDidStartConnecting:"),EventArgs ("DidStartConnecting"), EventName("StartedConnecting")]
-		void DidStartConnecting (TCConnection connection);
-
-		[Export ("connectionDidConnect:"),EventArgs ("DidConnect"), EventName("Connected")]
-		void DidConnect (TCConnection connection);
-
-		[Export ("connectionDidDisconnect:"),EventArgs ("DidDisconnect"), EventName("Disconnected")]
-		void DidDisconnect (TCConnection connection);
-	}
-	
+namespace TwilioClientCS 
+{
 	[BaseType (typeof (NSObject),
-	 Delegates=new string [] { "WeakDelegate" },
-	 Events=new Type [] { typeof(TCConnectionDelegate)})]
-	public partial interface TCConnection {
+	Delegates= new string [] {"WeakDelegate"},
+	Events=new Type [] { typeof (TCConnectionDelegate) })]
+	interface TCConnection {
+
+		[Field ("TCConnectionIncomingParameterFromKey", "__Internal")]
+		NSString FromKey { get; }
+
+		[Field ("TCConnectionIncomingParameterToKey", "__Internal")]
+		NSString ToKey { get; }
+
+		[Field ("TCConnectionIncomingParameterAccountSIDKey", "__Internal")]
+		NSString AccountSIDKey { get; }
+
+		[Field ("TCConnectionIncomingParameterAPIVersionKey", "__Internal")]
+		NSString APIVersionKey { get; }
+
+		[Field ("TCConnectionIncomingParameterCallSIDKey", "__Internal")]
+		NSString CallSIDKey { get; }
 
 		[Export ("state")]
 		TCConnectionState State { get; }
@@ -35,11 +35,11 @@ namespace TwilioClientCS {
 		[Export ("parameters")]
 		NSDictionary Parameters { get; }
 
-		[Export ("delegate", ArgumentSemantic.Assign)][NullAllowed]
-		NSObject WeakDelegate { get;set; }
-
 		[Wrap ("WeakDelegate")][NullAllowed]
 		TCConnectionDelegate Delegate { get; set; }
+
+		[Export ("delegate", ArgumentSemantic.Assign)][NullAllowed]
+		NSObject WeakDelegate { get; set; }
 
 		[Export ("muted")]
 		bool Muted { [Bind ("isMuted")] get; set; }
@@ -60,26 +60,50 @@ namespace TwilioClientCS {
 		void SendDigits (string digits);
 	}
 
-	[Model, BaseType (typeof (NSObject))]
-	public partial interface TCDeviceDelegate {
+	[BaseType (typeof (NSObject))]
+	[Model]
+	[Protocol]
+	interface TCConnectionDelegate {
 
-		[Export ("device:didStopListeningForIncomingConnections:"), Abstract, EventArgs("DidStopListeningForIncomingConnections"), EventName("StoppedListeningForIncomingConnections")]
-		void DidStopListeningForIncomingConnections (TCDevice device, NSError error);
+		[Abstract]
+		[Export ("connection:didFailWithError:"), EventArgs ("TCConnectionError"), EventName("Failed")]
+		void DidFail (TCConnection connection, NSError error);
 
-		[Export ("deviceDidStartListeningForIncomingConnections:"),EventArgs ("DidStartListeningForIncomingConnections"), EventName("StartedListeningForIncomingConnections")]
-		void DidStartListeningForIncomingConnections (TCDevice device);
+		[Export ("connectionDidStartConnecting:"), EventArgs ("TCConnection"), EventName("StartedConnecting")]
+		void DidStartConnecting (TCConnection connection);
 
-		[Export ("device:didReceiveIncomingConnection:"),EventArgs ("DidReceiveIncomingConnection"), EventName("ReceivedIncomingConnection")]
-		void DidReceiveIncomingConnection (TCDevice device, TCConnection connection);
+		[Export ("connectionDidConnect:"), EventArgs ("TCConnection"), EventName("Connected")]
+		void DidConnect (TCConnection connection);
 
-		[Export ("device:didReceivePresenceUpdate:"),EventArgs ("DidReceivePresenceUpdate"), EventName("ReceivedPresenceUpdate")]
-		void DidReceivePresenceUpdate (TCDevice device, TCPresenceEvent presenceEvent);
+		[Export ("connectionDidDisconnect:"), EventArgs ("TCConnection"), EventName("Disconnected")]
+		void DidDisconnect (TCConnection connection);
 	}
 	
 	[BaseType (typeof (NSObject),
-	 Delegates=new string [] { "WeakDelegate" },
-	 Events=new Type [] { typeof(TCDeviceDelegate)})]
-	public partial interface TCDevice {
+	Delegates=new string [] { "WeakDelegate" },
+	Events=new Type [] { typeof(TCDeviceDelegate)})]
+	interface TCDevice {
+
+		[Field ("TCDeviceCapabilityIncomingKey", "__Internal")]
+		NSString IncomingKey { get; }
+
+		[Field ("TCDeviceCapabilityOutgoingKey", "__Internal")]
+		NSString OutgoingKey { get; }
+
+		[Field ("TCDeviceCapabilityExpirationKey", "__Internal")]
+		NSString ExpirationKey { get; }
+
+		[Field ("TCDeviceCapabilityAccountSIDKey", "__Internal")]
+		NSString AccountSIDKey { get; }
+
+		[Field ("TCDeviceCapabilityApplicationSIDKey", "__Internal")]
+		NSString ApplicationSIDKey { get; }
+
+		[Field ("TCDeviceCapabilityApplicationParametersKey", "__Internal")]
+		NSString ApplicationParametersKey { get; }
+
+		[Field ("TCDeviceCapabilityClientNameKey", "__Internal")]
+		NSString ClientNameKey { get; }
 
 		[Export ("state")]
 		TCDeviceState State { get; }
@@ -103,7 +127,7 @@ namespace TwilioClientCS {
 		bool DisconnectSoundEnabled { get; set; }
 
 		[Export ("initWithCapabilityToken:delegate:")]
-		IntPtr Constructor (string capabilityToken, [NullAllowed]TCDeviceDelegate d);
+		IntPtr Constructor (string capabilityToken, [NullAllowed]TCDeviceDelegate aDelegate);
 
 		[Export ("listen")]
 		void Listen ();
@@ -115,14 +139,32 @@ namespace TwilioClientCS {
 		void UpdateCapabilityToken (string capabilityToken);
 
 		[Export ("connect:delegate:")][Internal]
-		IntPtr Connect_ (NSDictionary parameters, TCConnectionDelegate d);
+		IntPtr Connect_ ([NullAllowed] NSDictionary parameters, [NullAllowed] TCConnectionDelegate aDelegate);
 
 		[Export ("disconnectAll")]
 		void DisconnectAll ();
 	}
 
 	[BaseType (typeof (NSObject))]
-	public partial interface TCPresenceEvent {
+	[Model]
+	[Protocol]
+	interface TCDeviceDelegate {
+
+		[Export ("device:didStopListeningForIncomingConnections:"), Abstract, EventArgs("TCDeviceDelegateError"), EventName("StoppedListeningForIncomingConnections")]
+		void DidStopListeningForIncomingConnections (TCDevice device, NSError error);
+
+		[Export ("deviceDidStartListeningForIncomingConnections:"),EventArgs ("TCDeviceDelegate"), EventName("StartedListeningForIncomingConnections")]
+		void DidStartListeningForIncomingConnections (TCDevice device);
+
+		[Export ("device:didReceiveIncomingConnection:"),EventArgs ("TCDeviceDelegateConnection"), EventName("ReceivedIncomingConnection")]
+		void DidReceiveIncomingConnection (TCDevice device, TCConnection connection);
+
+		[Export ("device:didReceivePresenceUpdate:"),EventArgs ("TCDeviceDelegatePresence"), EventName("ReceivedPresenceUpdate")]
+		void DidReceivePresenceUpdate (TCDevice device, TCPresenceEvent presenceEvent);
+	}
+
+	[BaseType (typeof (NSObject))]
+	interface TCPresenceEvent {
 
 		[Export ("name")]
 		string Name { get; }

@@ -2,15 +2,15 @@ using System;
 
 namespace TwilioClientCS
 {
-	public enum TCConnectionState /*: [unmapped: unexposed: Elaborated]*/ {
-		Pending, // = 0,
+	public enum TCConnectionState {
+		Pending = 0,
 		Connecting,
 		Connected,
 		Disconnected
 	}
 
-	public enum TCDeviceState /*: [unmapped: unexposed: Elaborated]*/ {
-		Offline, // = 0,
+	public enum TCDeviceState  {
+		Offline = 0,
 		Ready,
 		Busy
 	}

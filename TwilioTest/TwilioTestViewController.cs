@@ -24,7 +24,7 @@ namespace TwilioTest
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
-			
+
 			// Release any cached data, images, etc that aren't in use.
 		}
 
@@ -35,7 +35,17 @@ namespace TwilioTest
 			WebClient client = new WebClient ();
 			string token = client.DownloadString ("http://devin.webscript.io/generateToken?clientName=mono&TwimlApp=AP71b92bb5615e4a11b10dffcac9582397");
 
-			device = new TCDevice(token,deviceDelegate);
+			//			device = new TCDevice(token,deviceDelegate);
+
+			// HACK:
+			// The delegate param should be null if you want to use events pattern instead of custom delegate pattern
+			// this is because when you set up an event we internally will create a Objc delegate that will be assigned to the delegate property
+			// and if we see that delegate property is not null then we will not be able to set you up
+
+			// You might find this reading interesting 
+			// http://docs.xamarin.com/guides/ios/application_fundamentals/delegates%2C_protocols%2C_and_events
+
+			device = new TCDevice(token, null);
 		}
 
 		#region TCDevice
@@ -86,18 +96,31 @@ namespace TwilioTest
 
 		partial void btnCall (NSObject sender)
 		{
-			device.StoppedListeningForIncomingConnections += delegate 
-			{
+			device.StoppedListeningForIncomingConnections += delegate {
 				Console.WriteLine("StoppedListeningForIncomingConnection"); 
 			};
+
 			device.StartedListeningForIncomingConnections += delegate 
 			{
 				Console.WriteLine("StartedListeningForIncomingConnections"); 
 			};
+
 			device.ReceivedIncomingConnection += delegate { Console.WriteLine("ReceivedIncomingConnection"); };
 			device.ReceivedPresenceUpdate += delegate { Console.WriteLine("ReceivedPresenceUpdate"); };
 
-			connection.FailedWithError += delegate 
+			NSDictionary param = NSDictionary.FromObjectsAndKeys (
+				new object[] { "+14159929754", "+13144586142" },
+			new object[] { "Source", "Target" }
+			);
+
+			// HACK: 
+			// In order to setup events you need to first initialize connection so we have a reference to it, also the delegate param should be null
+			// this is because when you set up an event we internally will create a Objc delegate that will be assigned to the delegate property
+			// and if we see that delegate property is not null then we will not be able to set you up
+
+			connection = device.Connect(param, null);
+
+			connection.Failed += delegate 
 			{
 				Console.WriteLine("FailedWithError"); 
 			};
@@ -113,13 +136,6 @@ namespace TwilioTest
 			{
 				Console.WriteLine("Disconnected"); 
 			};
-
-			NSDictionary param = NSDictionary.FromObjectsAndKeys (
-				new object[] { "+14159929754", "+13144586142" },
-				new object[] { "Source", "Target" }
-			);
-
-			connection = device.Connect(param, connectionDelegate);
 		}
 
 		#endregion
@@ -206,17 +222,17 @@ namespace TwilioTest
 
 		#endregion
 
-//		private void updateStateLabels {
-//			string stateString;
-//
-//			stateString = [self convertDeviceToString:[[self device] state] ];
-//			Console.WriteLine("updateStateLabels: " + stateString);
-//			[[self lblDeviceState] setText:stateString];
-//
-//			stateString = [self convertConnectionToString:[[self connection] state] ];
-//			Console.WriteLine("updateStateLabels: " + stateString);
-//			[[self lblConnectionState] setText:stateString];
-//		}
+		//		private void updateStateLabels {
+		//			string stateString;
+		//
+		//			stateString = [self convertDeviceToString:[[self device] state] ];
+		//			Console.WriteLine("updateStateLabels: " + stateString);
+		//			[[self lblDeviceState] setText:stateString];
+		//
+		//			stateString = [self convertConnectionToString:[[self connection] state] ];
+		//			Console.WriteLine("updateStateLabels: " + stateString);
+		//			[[self lblConnectionState] setText:stateString];
+		//		}
 	}
 }
 

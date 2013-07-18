@@ -115,21 +115,4 @@
       <Name>TwilioClientCS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\disconnect.wav" />
-    <BundleResource Include="Resources\dtmf_0.wav" />
-    <BundleResource Include="Resources\dtmf_1.wav" />
-    <BundleResource Include="Resources\dtmf_2.wav" />
-    <BundleResource Include="Resources\dtmf_3.wav" />
-    <BundleResource Include="Resources\dtmf_4.wav" />
-    <BundleResource Include="Resources\dtmf_5.wav" />
-    <BundleResource Include="Resources\dtmf_6.wav" />
-    <BundleResource Include="Resources\dtmf_7.wav" />
-    <BundleResource Include="Resources\dtmf_8.wav" />
-    <BundleResource Include="Resources\dtmf_9.wav" />
-    <BundleResource Include="Resources\dtmf_hash.wav" />
-    <BundleResource Include="Resources\dtmf_star.wav" />
-    <BundleResource Include="Resources\incoming.wav" />
-    <BundleResource Include="Resources\outgoing.wav" />
-  </ItemGroup>
 </Project>

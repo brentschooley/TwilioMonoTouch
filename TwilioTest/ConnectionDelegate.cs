@@ -6,7 +6,7 @@ namespace TwilioTest
 {
 	public class ConnectionDelegate : TCConnectionDelegate
 	{
-		public override void DidFailWithError(TCConnection connection, NSError error) {
+		public override void DidFail(TCConnection connection, NSError error) {
 			//Console.WriteLine("DidFailWithError: " + error.LocalizedDescription);
 		}
 
