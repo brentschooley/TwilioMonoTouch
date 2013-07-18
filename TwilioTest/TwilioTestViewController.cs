@@ -33,7 +33,7 @@ namespace TwilioTest
 			base.ViewDidLoad ();
 
 			WebClient client = new WebClient ();
-			string token = client.DownloadString ("http://devin.webscript.io/generateToken?clientName=mono&TwimlApp=AP71b92bb5615e4a11b10dffcac9582397");
+			string token = client.DownloadString ("http://devin.webscript.io/generateToken?ClientName=mono&TwimlApp=APd5e7f789da788fd4b1785353de3cfbf9");
 
 //			device = new TCDevice(token,deviceDelegate);
 
@@ -46,6 +46,11 @@ namespace TwilioTest
 			// http://docs.xamarin.com/guides/ios/application_fundamentals/delegates%2C_protocols%2C_and_events
 
 			device = new TCDevice(token, null);
+
+			Console.WriteLine("Inbound: " + device.Capabilities["incoming"].ToString());
+			Console.WriteLine("Outbound: " + device.Capabilities["outgoing"].ToString());
+
+			updateStateLabels ();
 		}
 
 		#region TCDevice
@@ -98,14 +103,29 @@ namespace TwilioTest
 		{
 			device.StoppedListeningForIncomingConnections += delegate {
 				Console.WriteLine("StoppedListeningForIncomingConnection"); 
+				updateStateLabels();
 			};
 
 			device.StartedListeningForIncomingConnections += delegate 
 			{
 				Console.WriteLine("StartedListeningForIncomingConnections"); 
+				updateStateLabels();
 			};
 
-			device.ReceivedIncomingConnection += delegate { Console.WriteLine("ReceivedIncomingConnection"); };
+			device.ReceivedIncomingConnection += (s,a) => 
+			{
+				Console.WriteLine("ReceivedIncomingConnection"); 
+
+				if (connection!=null && connection.State == TCConnectionState.Connected)
+				{
+					connection.Disconnect();
+				}
+
+				connection = a.Connection;
+
+				updateStateLabels();
+			};
+
 			device.ReceivedPresenceUpdate += delegate { Console.WriteLine("ReceivedPresenceUpdate"); };
 
 			NSDictionary param = NSDictionary.FromObjectsAndKeys (
@@ -123,18 +143,23 @@ namespace TwilioTest
 			connection.Failed += delegate 
 			{
 				Console.WriteLine("FailedWithError"); 
+				updateStateLabels();
 			};
 			connection.StartedConnecting += delegate 
 			{
 				Console.WriteLine("StartedConnecting"); 
+				updateStateLabels();
 			};
 			connection.Connected += delegate 
 			{
 				Console.WriteLine("Connected"); 
+				updateStateLabels();
 			};
 			connection.Disconnected += delegate 
 			{
 				Console.WriteLine("Disconnected"); 
+				updateStateLabels();
+				connection = null;
 			};
 		}
 
@@ -154,7 +179,7 @@ namespace TwilioTest
 
 		partial void btnHangup (NSObject sender)
 		{
-			if (connection !=null && connection.State == TCConnectionState.Connected)
+			if (connection !=null && (connection.State == TCConnectionState.Connected || connection.State == TCConnectionState.Connecting))
 			{
 				connection.Disconnect();
 			}
@@ -222,17 +247,23 @@ namespace TwilioTest
 
 		#endregion
 
-//		private void updateStateLabels {
-//			string stateString;
-//
-//			stateString = [self convertDeviceToString:[[self device] state] ];
-//			Console.WriteLine("updateStateLabels: " + stateString);
-//			[[self lblDeviceState] setText:stateString];
-//
-//			stateString = [self convertConnectionToString:[[self connection] state] ];
-//			Console.WriteLine("updateStateLabels: " + stateString);
-//			[[self lblConnectionState] setText:stateString];
-//		}
+		private void updateStateLabels() {
+			string stateString;
+
+			stateString = device.State.ToString ();
+			Console.WriteLine("updateStateLabels: " + stateString);
+			InvokeOnMainThread(delegate {
+				this.lblDeviceState.Text = stateString;
+			});
+
+			if (connection != null) {
+				stateString = connection.State.ToString ();
+				Console.WriteLine ("updateStateLabels: " + stateString);
+				InvokeOnMainThread (delegate {
+					this.lblConnectionState.Text = stateString;
+				});
+			}
+		}
 	}
 }
 

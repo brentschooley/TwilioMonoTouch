@@ -1,0 +1,26 @@
+﻿<Properties GitUserInfo="UsingGIT">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone.5.0" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="TwilioTest/TwilioTestViewController.cs">
+    <Files>
+      <File FileName="TwilioClientCS/ApiDefinition.cs" Line="136" Column="20" />
+      <File FileName="../../Downloads/TwilioClientCS/TwilioClientCS/ApiDefinition.cs" Line="4" Column="14" />
+      <File FileName="TwilioTest/TwilioTestViewController.cs" Line="109" Column="8" />
+      <File FileName="TwilioClientCS/StructsAndEnums.cs" Line="13" Column="10" />
+      <File FileName="../../Downloads/TwilioClientCS/TwilioTest/TwilioTestViewController.cs" Line="69" Column="3" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="TwilioClientCS" expanded="True" />
+          <Node name="TwilioTest" expanded="True">
+            <Node name="TwilioTestViewController.cs" expanded="True" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
