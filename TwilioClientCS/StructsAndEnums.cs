@@ -9,7 +9,7 @@ namespace TwilioClientCS
 		Disconnected
 	}
 
-	public enum TCDeviceState  {
+	public enum TCDeviceState {
 		Offline = 0,
 		Ready,
 		Busy

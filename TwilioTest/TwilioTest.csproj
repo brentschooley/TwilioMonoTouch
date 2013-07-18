@@ -47,7 +47,6 @@
     <ConsolePause>false</ConsolePause>
     <MtouchDebug>true</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchExtraArgs>-gcc_flags "-L${ProjectDir} -llibssl -llibcrypto -force_load ${ProjectDir}/libssl.a -force_load ${ProjectDir}/libcrypto.a""</MtouchExtraArgs>
     <IpaPackageName />
     <MtouchI18n />
     <MtouchArch>ARMv7</MtouchArch>
@@ -111,7 +110,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\TwilioClientCS\TwilioClientCS.csproj">
-      <Project>{2D010831-E074-465A-8D7C-5AB6B34C35AC}</Project>
+      <Project>{7D35490A-4D72-4EF9-8182-8E59C94045AB}</Project>
       <Name>TwilioClientCS</Name>
     </ProjectReference>
   </ItemGroup>

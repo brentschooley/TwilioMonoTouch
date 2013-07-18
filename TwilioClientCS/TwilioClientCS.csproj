@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2D010831-E074-465A-8D7C-5AB6B34C35AC}</ProjectGuid>
+    <ProjectGuid>{7D35490A-4D72-4EF9-8182-8E59C94045AB}</ProjectGuid>
     <ProjectTypeGuids>{F5B4F3BC-B597-4E2B-B552-EF5D8A32436F};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>TwilioClientCS</RootNamespace>
@@ -48,18 +48,18 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Xamarin.ObjcBinding.CSharp.targets" />
   <ItemGroup>
     <ObjcBindingNativeLibrary Include="libTwilioClient.a" />
-    <ObjcBindingNativeLibrary Include="libcrypto.a" />
     <ObjcBindingNativeLibrary Include="libssl.a" />
+    <ObjcBindingNativeLibrary Include="libcrypto.a" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="libTwilioClient.linkwith.cs">
       <DependentUpon>libTwilioClient.a</DependentUpon>
     </Compile>
-    <Compile Include="libcrypto.linkwith.cs">
-      <DependentUpon>libcrypto.a</DependentUpon>
-    </Compile>
     <Compile Include="libssl.linkwith.cs">
       <DependentUpon>libssl.a</DependentUpon>
+    </Compile>
+    <Compile Include="libcrypto.linkwith.cs">
+      <DependentUpon>libcrypto.a</DependentUpon>
     </Compile>
     <Compile Include="Extras.cs" />
   </ItemGroup>

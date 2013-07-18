@@ -24,7 +24,7 @@ namespace TwilioTest
 		{
 			// Releases the view if it doesn't have a superview.
 			base.DidReceiveMemoryWarning ();
-
+			
 			// Release any cached data, images, etc that aren't in use.
 		}
 
@@ -35,7 +35,7 @@ namespace TwilioTest
 			WebClient client = new WebClient ();
 			string token = client.DownloadString ("http://devin.webscript.io/generateToken?clientName=mono&TwimlApp=AP71b92bb5615e4a11b10dffcac9582397");
 
-			//			device = new TCDevice(token,deviceDelegate);
+//			device = new TCDevice(token,deviceDelegate);
 
 			// HACK:
 			// The delegate param should be null if you want to use events pattern instead of custom delegate pattern
@@ -110,7 +110,7 @@ namespace TwilioTest
 
 			NSDictionary param = NSDictionary.FromObjectsAndKeys (
 				new object[] { "+14159929754", "+13144586142" },
-			new object[] { "Source", "Target" }
+				new object[] { "Source", "Target" }
 			);
 
 			// HACK: 
@@ -222,17 +222,17 @@ namespace TwilioTest
 
 		#endregion
 
-		//		private void updateStateLabels {
-		//			string stateString;
-		//
-		//			stateString = [self convertDeviceToString:[[self device] state] ];
-		//			Console.WriteLine("updateStateLabels: " + stateString);
-		//			[[self lblDeviceState] setText:stateString];
-		//
-		//			stateString = [self convertConnectionToString:[[self connection] state] ];
-		//			Console.WriteLine("updateStateLabels: " + stateString);
-		//			[[self lblConnectionState] setText:stateString];
-		//		}
+//		private void updateStateLabels {
+//			string stateString;
+//
+//			stateString = [self convertDeviceToString:[[self device] state] ];
+//			Console.WriteLine("updateStateLabels: " + stateString);
+//			[[self lblDeviceState] setText:stateString];
+//
+//			stateString = [self convertConnectionToString:[[self connection] state] ];
+//			Console.WriteLine("updateStateLabels: " + stateString);
+//			[[self lblConnectionState] setText:stateString];
+//		}
 	}
 }
 
