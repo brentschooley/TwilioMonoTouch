@@ -1,5 +1,5 @@
 *.dll
 *.mbd
-
+.DS_Store
 bin/
 obj/
