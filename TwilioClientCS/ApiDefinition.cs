@@ -6,7 +6,7 @@ using MonoTouch.UIKit;
 
 namespace TwilioClientCS
 {
-	[BaseType (typeof (NSObject),
+	[BaseType (typeof (NSObject), Name = "TCConnectionInternal",
 	Delegates= new string [] {"WeakDelegate"},
 	Events=new Type [] { typeof (TCConnectionDelegate) })]
 	interface TCConnection {
@@ -138,8 +138,11 @@ namespace TwilioClientCS
 		[Export ("updateCapabilityToken:")]
 		void UpdateCapabilityToken (string capabilityToken);
 
-		[Export ("connect:delegate:")] [Internal]
-		IntPtr Connect_ ([NullAllowed] NSDictionary parameters, [NullAllowed] TCConnectionDelegate aDelegate);
+//		[Export ("connect:delegate:")] [Internal]
+//		IntPtr Connect_ ([NullAllowed] NSDictionary parameters, [NullAllowed] TCConnectionDelegate aDelegate);
+
+		[Export ("connect:delegate:")]
+		TCConnection Connect ([NullAllowed] NSDictionary parameters, [NullAllowed] TCConnectionDelegate aDelegate);
 
 		[Export ("disconnectAll")]
 		void DisconnectAll ();
