@@ -6,10 +6,10 @@ namespace TwilioClientCS
 {
 	public partial class TCDevice
 	{
-		public TCConnection Connect (NSDictionary parameters, TCConnectionDelegate aDelegate)
-		{
-			return new TCConnection ( Connect_ (parameters, aDelegate));
-		}
+		//public TCConnection Connect (NSDictionary parameters, TCConnectionDelegate aDelegate)
+		//{
+		//	return new TCConnection ( Connect_ (parameters, aDelegate));
+		//}
 	}
 }
 
